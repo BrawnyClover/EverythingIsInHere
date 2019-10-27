@@ -1,0 +1,17 @@
+계속하려면 아무 키나 누르십시오 . . . 
+LEVEL 0 : 11
+LEVEL 1 : 10
+LEVEL 2 : 9
+LEVEL 3 : 6
+LEVEL 4 : 4
+LEVEL 5 : 2
+LEVEL 6 : 1
+LEVEL 6 : 3
+LEVEL 5 : 5
+LEVEL 4 : 7
+LEVEL 5 : 8
+LEVEL 1 : 12
+LEVEL 2 : 13
+LEVEL 3 : 15
+LEVEL 4 : 14
+LEVEL 4 : 16
