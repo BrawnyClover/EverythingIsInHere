@@ -1,3 +1,4 @@
+
 #include <stdio.h> 
 #include <stdlib.h> 
 #pragma warning(disable: 4996)
@@ -5,7 +6,7 @@
 
 //data structure to store edge
 typedef struct node {
-	int num;
+	int num=0;
 	struct node* next;
 } Node;
 
@@ -14,24 +15,24 @@ typedef struct graph {
 	int size;
 	char *vertex;     //to store the vertices in character
 	int *visited; 
-	Node *adjList;    //adjacency list of graph
+	node *adjList;    //adjacency list of graph
 } Graph;
 
 
 
 //function to initiate graph
-void initGraph(Graph *g, int v) {
+void initGraph(graph *g, int v) {
 	g->size = v;
 	g->vertex = (char *)malloc(sizeof(char) * v);
 	g->visited = (int *)malloc(sizeof(int) * v); 
-	g->adjList = (Node *)malloc(sizeof(Node) * v);
+	g->adjList = (node *)malloc(sizeof(node) * v);
 	for (int i = 0; i < v; ++i)
 		g->adjList[i].next = NULL;
 }
 
 //function to add edges 
-void insertEdge(Graph *g, int start, int end) {
-	Node *temp = (Node *)malloc(sizeof(Node));
+void insertEdge(graph *g, int start, int end) {
+	node *temp = (node *)malloc(sizeof(node));
 	if (start >= g->size || end >= g->size) {
 		printf("The vertex is out of range ... \n");
 		return;
@@ -42,11 +43,11 @@ void insertEdge(Graph *g, int start, int end) {
 }
 
 //function to print adjacency list of the graph
-void printGraph(Graph* g) {
+void printGraph(graph* g) {
 	printf("\n===================================================================\n");
 	printf("Adjacency List of the  Graph ::\n");
 	for (int i = 0; i < g->size; i++) {
-		Node *temp = g->adjList[i].next;
+		node *temp = g->adjList[i].next;
 		printf("Vertex %c : ", g->vertex[i]);
 		while (temp) {
 			printf("-> %c ", g->vertex[temp->num]);
@@ -102,7 +103,7 @@ int dequeue(struct queue* q) {
 	return item;
 }
 
-void findPath(Graph *g, int s, int d, queue * q) {
+void findPath(graph *g, int s, int d, queue * q) {
 	if (s == d) return;
 
 	int *visited = (int *)malloc(sizeof(int) * g->size); 
@@ -112,15 +113,17 @@ void findPath(Graph *g, int s, int d, queue * q) {
 	visited[s] = 1;
 	enqueue(q, s);
 	
-	Node *temp = g->adjList[s].next; 
-	for (temp = g->adjList[s].next; ; temp = temp->next) {
+	node *temp = g->adjList[s].next; 
+	for (temp = g->adjList[s].next; ; temp = temp->next){
+		if(visited[temp->num] == 1){
+			continue;
+		}
 		enqueue(q, temp->num);
 		if (temp->num == d){
 			break;
 		}
 		if (visited[temp->num] == 0) {
 			visited[temp->num] = 1; 
-			printf("%d ", temp->num);
 		}
 	}
 	
@@ -138,12 +141,12 @@ int main(void) {
 	scanf("%d", &size);
 
 	//Create graph
-	Graph *graph = (Graph *)malloc(sizeof(Graph)); ;
-	initGraph(graph, size);
+	graph *d_graph = (graph *)malloc(sizeof(graph)); ;
+	initGraph(d_graph, size);
 
 	//Store the vertices 
 	printf("Enter the vertices of graph with no spaces : ");
-	scanf("%s", graph->vertex);
+	scanf("%s", d_graph->vertex);
 
 	//Get adjacency matrix as an input
 	printf("Enter adjacency matrix :\n"); 
@@ -151,13 +154,13 @@ int main(void) {
 		for (int j = 0; j < size; j++) {
 			scanf("%d", &check); 
 			if (check == 1) {
-				insertEdge(graph, k, j);
+				insertEdge(d_graph, k, j);
 			}
 		}
 	}
 
 	//print the graph inputted
-	printGraph(graph);
+	printGraph(d_graph);
 
 	//get input of source and destination
 	printf("\n===================================================================\n");
@@ -165,25 +168,26 @@ int main(void) {
 	scanf("%s", input);
 	printf("%s", input);
 
-	int n = graph->size;
+	int n = d_graph->size;
 	int snode, enode;
 	for (int i = 0; i < n; i++) {
-		if (graph->vertex[i] == input[0]) {
+		if (d_graph->vertex[i] == input[0]) {
 			snode = i;
 			break;
 		}
 	}
 	for (int i = 0; i < n; i++) {
-		if (graph->vertex[i] == input[1]) {
+		if (d_graph->vertex[i] == input[1]) {
 			enode = i;
 			break;
 		}
 	}
 	printf("\n");
 	struct queue *q = createQueue();
-	findPath(graph, snode, enode, q); 
+	findPath(d_graph, snode, enode, q);
+	
 	for(int i=q->front; i<=q->rear; i++){
-		printf("%c ", graph->vertex[q->items[i]]);
+		printf("%c ", d_graph->vertex[q->items[i]]);
 	}
 	return 0;
 }
